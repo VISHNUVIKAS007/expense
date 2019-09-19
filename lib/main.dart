@@ -10,6 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
       debugShowCheckedModeBanner: false,
       title: 'Expense App',
       home: myHome(),
@@ -26,9 +29,9 @@ class _myHomeState extends State<myHome> {
 
 
   final List<Transaction> _userTransaction = [
-    Transaction(id: '1', title: 'newshoes', amount: 100, date: DateTime.now()),
-    Transaction(id: '2', title: 'Groceries', amount: 250, date: DateTime.now()),
-    Transaction(id: '3', title: 'Ball', amount: 10, date: DateTime.now()),
+    //Transaction(id: '1', title: 'newshoes', amount: 100, date: DateTime.now()),
+    //Transaction(id: '2', title: 'Groceries', amount: 250, date: DateTime.now()),
+    //Transaction(id: '3', title: 'Ball', amount: 10, date: DateTime.now()),
   ];
 
   void _addNewTransaction(String txTitle, double txAmount) {
