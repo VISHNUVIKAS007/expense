@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
 import './widgets/transaction_list.dart';
+import './widgets/chart.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -26,13 +28,17 @@ class myHome extends StatefulWidget {
 }
 
 class _myHomeState extends State<myHome> {
-
-
   final List<Transaction> _userTransaction = [
     //Transaction(id: '1', title: 'newshoes', amount: 100, date: DateTime.now()),
     //Transaction(id: '2', title: 'Groceries', amount: 250, date: DateTime.now()),
     //Transaction(id: '3', title: 'Ball', amount: 10, date: DateTime.now()),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _userTransaction.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
 
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
@@ -50,12 +56,11 @@ class _myHomeState extends State<myHome> {
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            onTap: (){},
-            child:NewTransaction(_addNewTransaction),
+            onTap: () {},
+            child: NewTransaction(_addNewTransaction),
             behavior: HitTestBehavior.opaque,
           );
-        }
-        );
+        });
   }
 
   @override
@@ -65,7 +70,7 @@ class _myHomeState extends State<myHome> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: ()=> _startAddNewTransaction(context),
+            onPressed: () => _startAddNewTransaction(context),
           ),
         ],
         title: Text('EXpense'),
@@ -76,25 +81,18 @@ class _myHomeState extends State<myHome> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: Card(
-                color: Colors.yellow,
-                child: Text('Chart'),
-                elevation: 5,
-              ),
-            ),
+            Chart(_recentTransactions),
             TransactionList(_userTransaction),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          backgroundColor: Colors.redAccent,
-          elevation: 5,
-          onPressed: ()=> _startAddNewTransaction(context),
-          ),
+        child: Icon(Icons.add),
+        backgroundColor: Colors.redAccent,
+        elevation: 5,
+        onPressed: () => _startAddNewTransaction(context),
+      ),
     );
   }
 }
